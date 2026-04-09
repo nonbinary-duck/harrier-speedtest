@@ -22,9 +22,8 @@ docker compose build
   
 ### 2. Run
 Runs the benchmark with default settings (8192 token chunks, batch size 1).
-*Note: You must pass `python speedtest.py` after the container name to execute the script.*
 ```bash
-docker compose run --rm -it harrier-speedtest python speedtest.py
+docker compose run --rm -it harrier-speedtest
 ```
   
 ---

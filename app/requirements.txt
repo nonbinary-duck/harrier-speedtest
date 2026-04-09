@@ -1,0 +1,6 @@
+beautifulsoup4
+huggingface-hub
+lxml
+numpy
+requests
+transformers==4.57.0

@@ -1,0 +1,20 @@
+services:
+  harrier-speedtest:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: harrier-speedtest:latest
+    command: ["python", "speedtest.py"]
+    tty: true
+    stdin_open: true
+    environment:
+      HF_HOME: /opt/cache/huggingface
+      HUGGINGFACE_HUB_CACHE: /opt/cache/huggingface
+      PYTHONUNBUFFERED: "1"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

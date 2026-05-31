@@ -4,17 +4,20 @@ services:
       context: .
       dockerfile: Dockerfile
     image: harrier-speedtest:latest
-    command: ["python", "speedtest.py"]
+    command: ["python", "speedtest.py", "--device", "cpu", "--dtype", "float32"]
     tty: true
     stdin_open: true
+    # CPU Core Constraints
+    cpuset: "0-11" # Lock to physical cores 0 to 11 on Socket 0
     environment:
       HF_HOME: /opt/cache/huggingface
       HUGGINGFACE_HUB_CACHE: /opt/cache/huggingface
       PYTHONUNBUFFERED: "1"
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
+      # PyTorch & Intel CPU Threading optimizations
+      OMP_NUM_THREADS: "12"
+      MKL_NUM_THREADS: "12"
+      OPENBLAS_NUM_THREADS: "12"
+      VECLIB_MAXIMUM_THREADS: "12"
+      NUMEXPR_NUM_THREADS: "12"
+      # Optimize memory allocator for CPU-based deep learning
+      MALLOC_CONF: "background_thread:true,metadata_thp:auto,dirty_decay_ms:90000,muzzy_decay_ms:90000"

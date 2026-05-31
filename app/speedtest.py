@@ -3,7 +3,16 @@ import gc
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+import os
 import torch
+
+# Force CPU thread configurations before any model execution starts
+NUM_THREADS = 12
+torch.set_num_threads(NUM_THREADS)
+torch.set_num_interop_threads(1)  # Keeps inter-op threading overhead to zero
+os.environ["OMP_NUM_THREADS"] = str(NUM_THREADS)
+os.environ["MKL_NUM_THREADS"] = str(NUM_THREADS)
+
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from utils import (
